@@ -1,8 +1,13 @@
+import 'package:d_day_app/models/dday.dart';
 import "package:flutter/material.dart";
 
 class DetailPage extends StatelessWidget {
+  static const routeName = '/detail';
+
   @override
   Widget build(BuildContext context) {
+    final DDay dDay = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -14,7 +19,8 @@ class DetailPage extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
-          child: Text("Hello"),
+          child:
+              Text("${dDay.id} / ${dDay.title} / ${dDay.days} / ${dDay.type}"),
         ));
   }
 }

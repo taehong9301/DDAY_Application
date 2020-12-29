@@ -11,9 +11,9 @@ void main() {
       fontFamily: 'Spoqa Han Sans',
     ),
     routes: {
-      "/": (context) => HomePage(),
-      "/register": (context) => RegisterPage(),
-      "/detail": (context) => DetailPage(),
+      HomePage.routeName: (context) => HomePage(),
+      RegisterPage.routeName: (context) => RegisterPage(),
+      DetailPage.routeName: (context) => DetailPage(),
     },
   ));
 }

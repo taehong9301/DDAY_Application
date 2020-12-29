@@ -1,3 +1,4 @@
+import 'package:d_day_app/models/dday.dart';
 import 'package:d_day_app/repositories/database_helper.dart';
 import "package:flutter/material.dart";
 
@@ -14,13 +15,11 @@ class _DDayListViewState extends State<DDayListView> {
   _DDayListViewState() {
     DatabaseHelper.instance.findAll().then((rows) => setState(() {
           if (rows.length != 0) {
-            var data =
-                rows.map((row) => DDayCard(row["title"], "${row["days"]} 일"));
+            var data = rows.map((row) => DDayCard(
+                DDay(row["id"], row["title"], row["days"], row["type"])));
             for (Widget w in data) {
               entries.add(w);
             }
-          } else {
-            entries = [DDayCard("등록된 D-DAY가 없어요", "")];
           }
           entries.add(RegisterButton());
         }));
@@ -45,16 +44,15 @@ class _DDayListViewState extends State<DDayListView> {
 }
 
 class DDayCard extends StatelessWidget {
-  final String title;
-  final String days;
+  final DDay dDay;
 
-  DDayCard(this.title, this.days);
+  DDayCard(this.dDay);
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
       onPressed: () {
-        Navigator.pushNamed(context, "/detail");
+        Navigator.pushNamed(context, "/detail", arguments: dDay);
       },
       color: Colors.white,
       padding: EdgeInsets.all(35.0),
@@ -62,11 +60,11 @@ class DDayCard extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Text(title),
+              child: Text(dDay.title),
               flex: 1,
             ),
             Text(
-              days,
+              "${dDay.days} 일",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
