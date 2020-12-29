@@ -1,6 +1,9 @@
 import "package:flutter/material.dart";
 
-Widget RegisterButton(context) => FloatingActionButton(
+class RegisterButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
       child: Container(
         width: double.infinity,
         height: double.infinity,
@@ -21,3 +24,27 @@ Widget RegisterButton(context) => FloatingActionButton(
         Navigator.pushNamed(context, "/register");
       },
     );
+  }
+}
+
+class CustomBackButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: 'backButton',
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Icon(
+            Icons.close,
+            size: 25,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}

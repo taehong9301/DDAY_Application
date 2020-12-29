@@ -1,6 +1,6 @@
-import 'package:d_day_app/pages/detail.dart';
-import 'package:d_day_app/pages/home.dart';
-import 'package:d_day_app/pages/register.dart';
+import 'package:d_day_app/screens/detail.dart';
+import 'package:d_day_app/screens/home.dart';
+import 'package:d_day_app/screens/register.dart';
 import 'package:flutter/material.dart';
 
 void main() {

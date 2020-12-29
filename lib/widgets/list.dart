@@ -1,8 +1,16 @@
 import "package:flutter/material.dart";
 
 // List View Builder
-Widget ListViewBuilder(context, entries, {colorCodes, padding: 50.0}) =>
-    ListView.builder(
+class ListViewBuilder extends StatelessWidget {
+  final List<Widget> entries;
+  final List<Color> colorCodes;
+  final double padding;
+
+  ListViewBuilder(this.entries, {this.colorCodes, this.padding: 40.0});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
       itemCount: entries.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
@@ -14,6 +22,8 @@ Widget ListViewBuilder(context, entries, {colorCodes, padding: 50.0}) =>
         );
       },
     );
+  }
+}
 
 Widget DDayCard(context, padding) => InkWell(
       onTap: () {

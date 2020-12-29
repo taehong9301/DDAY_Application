@@ -9,13 +9,9 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: HomeAppBar(),
       body: SafeArea(
-        child: Center(
-            child: ListViewBuilder(
-          context,
-          [Text("test12"), Text("test2")],
-        )),
+        child: Center(child: ListViewBuilder([Text("test12"), Text("test2")])),
       ),
-      floatingActionButton: RegisterButton(context),
+      floatingActionButton: RegisterButton(),
     );
   }
 }
