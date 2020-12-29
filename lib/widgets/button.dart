@@ -3,26 +3,28 @@ import "package:flutter/material.dart";
 class RegisterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Icon(
-          Icons.add,
-          size: 40,
-        ),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            begin: Alignment(-1.0, -2.0),
-            end: Alignment(1.0, 2.0),
-            colors: [Colors.purpleAccent[100], Colors.deepPurple],
-          ),
-        ),
-      ),
+    return RaisedButton(
       onPressed: () {
         Navigator.pushNamed(context, "/register");
       },
+      padding: EdgeInsets.all(0),
+      child: Container(
+        width: double.infinity,
+        height: 80,
+        child: Icon(
+          Icons.add,
+          size: 40,
+          color: Colors.white,
+        ),
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          gradient: LinearGradient(
+            begin: Alignment(-1.0, -2.0),
+            end: Alignment(1.0, 2.0),
+            colors: [Colors.purple[100], Colors.blue[100]],
+          ),
+        ),
+      ),
     );
   }
 }

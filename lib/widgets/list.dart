@@ -1,23 +1,21 @@
 import "package:flutter/material.dart";
 
-// List View Builder
-class ListViewBuilder extends StatelessWidget {
+class DDayListView extends StatelessWidget {
   final List<Widget> entries;
-  final List<Color> colorCodes;
-  final double padding;
 
-  ListViewBuilder(this.entries, {this.colorCodes, this.padding: 40.0});
+  DDayListView(this.entries);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: entries.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          color: null != colorCodes ? colorCodes[index] : null,
+          color: Colors.white,
           child: Card(
             elevation: 3,
-            child: DDayCard(context, padding),
+            child: entries[index],
           ),
         );
       },
@@ -25,24 +23,39 @@ class ListViewBuilder extends StatelessWidget {
   }
 }
 
-Widget DDayCard(context, padding) => InkWell(
-      onTap: () {
-        print("Clicked card");
+class DDayCard extends StatelessWidget {
+  final String title;
+  final String days;
+
+  DDayCard(this.title, this.days);
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      onPressed: () {
         Navigator.pushNamed(context, "/detail");
       },
+      color: Colors.white,
+      padding: EdgeInsets.all(35.0),
       child: Container(
         child: Row(
           children: [
             Expanded(
-              child: Text("연애!"),
+              child: Text(title),
               flex: 1,
             ),
-            Text("325일"),
+            Text(
+              days,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
-        padding: EdgeInsets.all(padding),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
         ),
       ),
     );
+  }
+}

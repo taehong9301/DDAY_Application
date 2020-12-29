@@ -8,7 +8,7 @@ void main() {
     title: 'D-Day Application',
     initialRoute: "/",
     theme: ThemeData(
-      fontFamily: 'NanumBarunpen',
+      fontFamily: 'Spoqa Han Sans',
     ),
     routes: {
       "/": (context) => HomePage(),
