@@ -27,8 +27,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    // AdMob 초기화
     _initAdMob();
 
+    // 배너 광고 설정
     _bannerAd = BannerAd(
         adUnitId: AdManager.bannerAdUnitId,
         size: AdSize.smartBanner,
@@ -41,6 +43,7 @@ class _HomePageState extends State<HomePage> {
           }
         });
 
+    // 배너 광고를 불러옴
     _loadBannerAd();
   }
 

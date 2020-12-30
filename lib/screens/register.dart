@@ -22,6 +22,8 @@ class _RegisterPageState extends State<RegisterPage> {
   String _datetime;
   TextEditingController textEditingController;
   FocusNode _titleFocusNode;
+  DDay dDay;
+  bool isLoadValueIfEdit = false;
 
   @override
   void initState() {
@@ -57,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
     ));
 
     // type 에 따라 다르게
-    String text = getDDayMessage(_datetime, type: _type);
+    String text = getDDayMessageByType(_datetime, type: _type);
     sub.add(Text("$text"));
     result.add(Row(
       children: sub,
@@ -67,6 +69,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    dDay = ModalRoute.of(context).settings.arguments;
+    if (dDay != null && !isLoadValueIfEdit) {
+      setState(() {
+        _type = dDay.type;
+        _datetime = dDay.datetime;
+        textEditingController.text = dDay.title;
+        isLoadValueIfEdit = true;
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -79,28 +91,50 @@ class _RegisterPageState extends State<RegisterPage> {
             Navigator.pop(context);
           },
         ),
+        title: Text(
+          dDay == null ? "D-DAY 등록" : "D-DAY 수정",
+          style:
+              TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.white,
         elevation: 0.0,
         actions: [
           FlatButton(
               onPressed: () {
-                if (textEditingController.text.length > 20) {
+                if (textEditingController.text.length > 20 ||
+                    textEditingController.text.length == 0) {
                   return;
                 }
 
-                Map<String, dynamic> data = {
-                  "type": _type,
-                  "title": textEditingController.text,
-                  "datetime": _datetime
-                };
-                DatabaseHelper.instance.insert(data).then((int result) {
-                  if (result != 0) {
+                if (dDay == null) {
+                  // 처음 등록
+                  Map<String, dynamic> data = {
+                    "type": _type,
+                    "title": textEditingController.text,
+                    "datetime": _datetime
+                  };
+                  DatabaseHelper.instance.insert(data).then((int result) {
+                    if (result != 0) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, HomePage.routeName, (r) => false);
+                    } else {}
+                  });
+                } else {
+                  // 수정
+                  Map<String, dynamic> data = {
+                    "id": dDay.id,
+                    "type": _type,
+                    "title": textEditingController.text,
+                    "datetime": _datetime
+                  };
+                  DatabaseHelper.instance.update(data).then((result) {
+                    print(result);
                     Navigator.pushNamedAndRemoveUntil(
                         context, HomePage.routeName, (r) => false);
-                  } else {}
-                });
+                  });
+                }
               },
-              child: Text("저장")),
+              child: Text(dDay == null ? "저장" : "수정 완료")),
         ],
       ),
       body: SafeArea(

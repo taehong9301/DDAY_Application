@@ -2,7 +2,7 @@ import 'package:d_day_app/models/dday.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 
-String getDDayMessage(String datetime, {String type}) {
+String getDDayMessageByType(String datetime, {String type}) {
   type = type ?? DDayType.DEFAULT.toString();
 
   final String datePattern = "yyyy-MM-dd";
@@ -48,7 +48,7 @@ String getDDayMessage(String datetime, {String type}) {
   return text;
 }
 
-Icon getIcon({String type}) {
+CircleAvatar getCircleAvatarByType({String type}) {
   type = type ?? DDayType.DEFAULT.toString();
   final Map<String, IconData> _iconTable = {
     DDayType.DEFAULT.toString(): Icons.star,
@@ -57,13 +57,14 @@ Icon getIcon({String type}) {
     DDayType.STUDY.toString(): Icons.edit
   };
 
-  return Icon(
-    _iconTable[type],
-    color: getColor(type: type),
+  return CircleAvatar(
+    backgroundColor: getColorByType(type: type),
+    child: Icon(_iconTable[type]),
+    foregroundColor: Colors.white,
   );
 }
 
-Color getColor({String type}) {
+Color getColorByType({String type}) {
   type = type ?? DDayType.DEFAULT.toString();
   final Map<String, Color> _colorTable = {
     DDayType.DEFAULT.toString(): Colors.yellow[600],
