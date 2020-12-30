@@ -19,8 +19,8 @@ class DetailPage extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
-          child:
-              Text("${dDay.id} / ${dDay.title} / ${dDay.days} / ${dDay.type}"),
+          child: Text(
+              "${dDay.id} / ${dDay.title} / ${dDay.type} / ${dDay.datetime}"),
         ));
   }
 }

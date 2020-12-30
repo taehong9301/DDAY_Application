@@ -35,7 +35,7 @@ class DatabaseHelper {
       (
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
-        days INTEGER  NOT NULL,
+        datetime TEXT  NOT NULL,
         type TEXT NOT NULL
       )
     """);

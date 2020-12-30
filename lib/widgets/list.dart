@@ -16,7 +16,7 @@ class _DDayListViewState extends State<DDayListView> {
     DatabaseHelper.instance.findAll().then((rows) => setState(() {
           if (rows.length != 0) {
             var data = rows.map((row) => DDayCard(
-                DDay(row["id"], row["title"], row["days"], row["type"])));
+                DDay(row["id"], row["title"], row["datetime"], row["type"])));
             for (Widget w in data) {
               entries.add(w);
             }
@@ -64,7 +64,7 @@ class DDayCard extends StatelessWidget {
               flex: 1,
             ),
             Text(
-              "${dDay.days} 일",
+              "${dDay.datetime} 일",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
