@@ -1,5 +1,6 @@
 import 'package:d_day_app/models/dday.dart';
 import 'package:d_day_app/repositories/database_helper.dart';
+import 'package:d_day_app/utils/date_calc.dart';
 import "package:flutter/material.dart";
 
 import 'button.dart';
@@ -64,7 +65,7 @@ class DDayCard extends StatelessWidget {
               flex: 1,
             ),
             Text(
-              "${dDay.datetime} 일",
+              getDDayMessage(dDay.datetime, type: dDay.type),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),

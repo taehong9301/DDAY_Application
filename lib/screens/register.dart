@@ -1,5 +1,6 @@
 import 'package:d_day_app/models/dday.dart';
 import 'package:d_day_app/repositories/database_helper.dart';
+import 'package:d_day_app/utils/date_calc.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
@@ -17,21 +18,51 @@ class _RegisterPageState extends State<RegisterPage> {
   final String datePattern = "yyyy-MM-dd";
   final String locale = "ko_KR";
 
-  String _type = DDayType.DEFAULT.toString();
-  String _datetime = DateTime.now().format("yyyy-MM-dd", 'ko_KR');
-  TextEditingController textEditingController = TextEditingController();
+  String _type;
+  String _datetime;
+  TextEditingController textEditingController;
   FocusNode _titleFocusNode;
 
   @override
   void initState() {
     super.initState();
     _titleFocusNode = FocusNode();
+    _type = DDayType.DEFAULT.toString();
+    _datetime = DateTime.now().format("yyyy-MM-dd", 'ko_KR');
+    textEditingController = TextEditingController();
   }
 
   @override
   void dispose() {
     _titleFocusNode.dispose();
     super.dispose();
+  }
+
+  getPreview() {
+    List<Widget> result = List();
+
+    // prefix
+    result.add(Text(
+      "미리보기",
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ));
+    result.add(SizedBox(height: 10.0));
+
+    List<Widget> sub = List();
+    sub.add(Expanded(
+      child: Text(
+        "${textEditingController.text != "" ? textEditingController.text : "비어있음"}",
+      ),
+      flex: 1,
+    ));
+
+    // type 에 따라 다르게
+    String text = getDDayMessage(_datetime, type: _type);
+    sub.add(Text("$text"));
+    result.add(Row(
+      children: sub,
+    ));
+    return result;
   }
 
   @override
@@ -159,6 +190,16 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  margin: EdgeInsets.only(bottom: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: getPreview(),
                   ),
                 ),
                 Container(
