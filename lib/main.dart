@@ -2,9 +2,12 @@ import 'package:d_day_app/screens/detail.dart';
 import 'package:d_day_app/screens/home.dart';
 import 'package:d_day_app/screens/register.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(MaterialApp(
     title: 'D-Day Application',
     initialRoute: "/",

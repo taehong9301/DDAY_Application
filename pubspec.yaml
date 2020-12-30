@@ -37,6 +37,7 @@ dependencies:
   dart_date: ^1.0.9
   flutter_slidable: ^0.4.7
   material_dialogs: ^0.0.4
+  flutter_local_notifications: ^3.0.2
 
 dev_dependencies:
   flutter_test:
