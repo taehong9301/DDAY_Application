@@ -1,14 +1,16 @@
 import 'package:d_day_app/models/dday.dart';
 import 'package:d_day_app/repositories/database_helper.dart';
-import 'package:d_day_app/screens/home.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 
+import 'home.dart';
+
+String _type = DDayType.DEFAULT.toString();
+String _datetime = DateTime.now().format("yyyy-MM-dd", 'ko_KR');
+
 class RegisterPage extends StatelessWidget {
   static const routeName = '/register';
-
-  String _type = DDayType.DEFAULT.toString();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class RegisterPage extends StatelessWidget {
                 Map<String, dynamic> data = {
                   "type": _type,
                   "title": "연애",
-                  "datetime": DateTime.now().toString()
+                  "datetime": _datetime
                 };
                 DatabaseHelper.instance.insert(data).then((result) =>
                     result != 0
@@ -47,29 +49,10 @@ class RegisterPage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              TypeSelector(type: _type),
+              TypeSelector(),
               Column(
                 children: [
-                  SizedBox(
-                    height: 300,
-                    child: CupertinoDatePicker(
-                      minimumYear: 1900,
-                      maximumYear: DateTime.now().addYears(100).year,
-                      initialDateTime: Date.parse(
-                          DateTime.now().format("yyyy-MM-dd", 'ko_KR'),
-                          pattern: "yyyy-MM-dd",
-                          locale: 'ko_KR'),
-                      maximumDate: Date.parse(
-                          DateTime.now()
-                              .addYears(100)
-                              .format("yyyy-MM-dd", 'ko_KR'),
-                          pattern: "yyyy-MM-dd",
-                          locale: 'ko_KR'),
-                      onDateTimeChanged: (datetime) =>
-                          {print("test $datetime")},
-                      mode: CupertinoDatePickerMode.date,
-                    ),
-                  ),
+                  DatetimeForm(),
                 ],
               ),
             ],
@@ -81,9 +64,6 @@ class RegisterPage extends StatelessWidget {
 }
 
 class TypeSelector extends StatefulWidget {
-  String type;
-  TypeSelector({Key key, this.type}) : super(key: key);
-
   @override
   _TypeSelectorState createState() => _TypeSelectorState();
 }
@@ -100,10 +80,10 @@ class _TypeSelectorState extends State<TypeSelector> {
           RaisedButton(
             onPressed: () {
               setState(() {
-                widget.type = DDayType.DEFAULT.toString();
+                _type = DDayType.DEFAULT.toString();
               });
             },
-            color: widget.type == DDayType.DEFAULT.toString()
+            color: _type == DDayType.DEFAULT.toString()
                 ? Colors.pink[100]
                 : Colors.grey[200],
             child: Text("기본"),
@@ -114,10 +94,10 @@ class _TypeSelectorState extends State<TypeSelector> {
           RaisedButton(
             onPressed: () {
               setState(() {
-                widget.type = DDayType.LOVE.toString();
+                _type = DDayType.LOVE.toString();
               });
             },
-            color: widget.type == DDayType.LOVE.toString()
+            color: _type == DDayType.LOVE.toString()
                 ? Colors.pink[100]
                 : Colors.grey[200],
             child: Text("연애"),
@@ -128,10 +108,10 @@ class _TypeSelectorState extends State<TypeSelector> {
           RaisedButton(
             onPressed: () {
               setState(() {
-                widget.type = DDayType.SOLDIER.toString();
+                _type = DDayType.SOLDIER.toString();
               });
             },
-            color: widget.type == DDayType.SOLDIER.toString()
+            color: _type == DDayType.SOLDIER.toString()
                 ? Colors.pink[100]
                 : Colors.grey[200],
             child: Text("전역일"),
@@ -142,10 +122,10 @@ class _TypeSelectorState extends State<TypeSelector> {
           RaisedButton(
             onPressed: () {
               setState(() {
-                widget.type = DDayType.STUDY.toString();
+                _type = DDayType.STUDY.toString();
               });
             },
-            color: widget.type == DDayType.STUDY.toString()
+            color: _type == DDayType.STUDY.toString()
                 ? Colors.pink[100]
                 : Colors.grey[200],
             child: Text("수능"),
@@ -156,15 +136,39 @@ class _TypeSelectorState extends State<TypeSelector> {
   }
 }
 
-class RegisterBottomContainer extends StatefulWidget {
+class DatetimeForm extends StatefulWidget {
   @override
-  _RegisterBottomContainerState createState() =>
-      _RegisterBottomContainerState();
+  _DatetimeFormState createState() => _DatetimeFormState();
 }
 
-class _RegisterBottomContainerState extends State<RegisterBottomContainer> {
+class _DatetimeFormState extends State<DatetimeForm> {
+  final String DATE_PATTERN = "yyyy-MM-dd";
+  final String DATE_LOCALE = "ko_KR";
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SizedBox(
+      height: 300,
+      child: CupertinoDatePicker(
+        minimumYear: DateTime.now().subYears(100).year,
+        maximumYear: DateTime.now().addYears(100).year,
+        maximumDate: Date.parse(
+          DateTime.now().addYears(100).format(DATE_PATTERN, DATE_LOCALE),
+          pattern: DATE_PATTERN,
+          locale: DATE_LOCALE,
+        ),
+        initialDateTime: Date.parse(
+          _datetime,
+          pattern: DATE_PATTERN,
+          locale: DATE_LOCALE,
+        ),
+        onDateTimeChanged: (datetime) => {
+          setState(() {
+            _datetime = datetime.format(DATE_PATTERN, DATE_LOCALE);
+          })
+        },
+        mode: CupertinoDatePickerMode.date,
+      ),
+    );
   }
 }
