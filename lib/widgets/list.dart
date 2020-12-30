@@ -1,6 +1,6 @@
 import 'package:d_day_app/models/dday.dart';
 import 'package:d_day_app/repositories/database_helper.dart';
-import 'package:d_day_app/utils/date_calc.dart';
+import 'package:d_day_app/utils/data_controller.dart';
 import "package:flutter/material.dart";
 
 import 'button.dart';
@@ -55,25 +55,43 @@ class DDayCard extends StatelessWidget {
       onPressed: () {
         Navigator.pushNamed(context, "/detail", arguments: dDay);
       },
+      padding: EdgeInsets.zero,
       color: Colors.white,
-      padding: EdgeInsets.all(35.0),
       child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: 35.0,
+          horizontal: 20.0,
+        ),
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: getColor(type: dDay.type),
+              width: 5.0,
+            ),
+          ),
+        ),
         child: Row(
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    dDay.title,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    dDay.datetime,
-                    style: TextStyle(fontSize: 14.0),
+                  getIcon(type: dDay.type),
+                  SizedBox(width: 10.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        dDay.title,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        dDay.datetime,
+                        style: TextStyle(fontSize: 14.0),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -81,13 +99,9 @@ class DDayCard extends StatelessWidget {
             ),
             Text(
               getDDayMessage(dDay.datetime, type: dDay.type),
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.pink[300]),
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
-        ),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
         ),
       ),
     );

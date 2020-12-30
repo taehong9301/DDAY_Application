@@ -1,5 +1,6 @@
 import 'package:d_day_app/models/dday.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:flutter/material.dart';
 
 String getDDayMessage(String datetime, {String type}) {
   type = type ?? DDayType.DEFAULT.toString();
@@ -45,4 +46,30 @@ String getDDayMessage(String datetime, {String type}) {
   }
 
   return text;
+}
+
+Icon getIcon({String type}) {
+  type = type ?? DDayType.DEFAULT.toString();
+  final Map<String, IconData> _iconTable = {
+    DDayType.DEFAULT.toString(): Icons.star,
+    DDayType.LOVE.toString(): Icons.favorite,
+    DDayType.SOLDIER.toString(): Icons.military_tech,
+    DDayType.STUDY.toString(): Icons.edit
+  };
+
+  return Icon(
+    _iconTable[type],
+    color: getColor(type: type),
+  );
+}
+
+Color getColor({String type}) {
+  type = type ?? DDayType.DEFAULT.toString();
+  final Map<String, Color> _colorTable = {
+    DDayType.DEFAULT.toString(): Colors.yellow[600],
+    DDayType.LOVE.toString(): Colors.pink[200],
+    DDayType.SOLDIER.toString(): Colors.green[400],
+    DDayType.STUDY.toString(): Colors.blue[200]
+  };
+  return _colorTable[type];
 }
