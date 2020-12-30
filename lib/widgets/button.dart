@@ -1,3 +1,4 @@
+import 'package:d_day_app/screens/register.dart';
 import "package:flutter/material.dart";
 
 class RegisterButton extends StatelessWidget {
@@ -5,7 +6,7 @@ class RegisterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaisedButton(
       onPressed: () {
-        Navigator.pushNamed(context, "/register");
+        Navigator.pushNamed(context, RegisterPage.routeName);
       },
       padding: EdgeInsets.all(0),
       child: Container(

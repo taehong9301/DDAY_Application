@@ -6,11 +6,33 @@ import "package:flutter/material.dart";
 
 import 'home.dart';
 
-String _type = DDayType.DEFAULT.toString();
-String _datetime = DateTime.now().format("yyyy-MM-dd", 'ko_KR');
-
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   static const routeName = '/register';
+
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final String datePattern = "yyyy-MM-dd";
+  final String locale = "ko_KR";
+
+  String _type = DDayType.DEFAULT.toString();
+  String _datetime = DateTime.now().format("yyyy-MM-dd", 'ko_KR');
+  TextEditingController textEditingController = TextEditingController();
+  FocusNode _titleFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _titleFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,143 +53,190 @@ class RegisterPage extends StatelessWidget {
         actions: [
           FlatButton(
               onPressed: () {
+                if (textEditingController.text.length > 20) {
+                  return;
+                }
+
                 Map<String, dynamic> data = {
                   "type": _type,
-                  "title": "연애",
+                  "title": textEditingController.text,
                   "datetime": _datetime
                 };
-                DatabaseHelper.instance.insert(data).then((result) =>
-                    result != 0
-                        ? Navigator.pushNamedAndRemoveUntil(
-                            context, HomePage.routeName, (r) => false)
-                        : null);
+                DatabaseHelper.instance.insert(data).then((int result) {
+                  if (result != 0) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, HomePage.routeName, (r) => false);
+                  } else {}
+                });
               },
               child: Text("저장")),
         ],
       ),
       body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              TypeSelector(),
-              Column(
-                children: [
-                  DatetimeForm(),
-                ],
-              ),
-            ],
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus(); // 키보드 없애기
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(5),
+                  margin: EdgeInsets.only(bottom: 20.0),
+                  height: 50,
+                  color: Colors.grey[100],
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            _type = DDayType.DEFAULT.toString();
+                          });
+                        },
+                        child: Text(
+                          "기본",
+                          style: TextStyle(
+                            fontWeight: _type == DDayType.DEFAULT.toString()
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            _type = DDayType.LOVE.toString();
+                          });
+                        },
+                        child: Text(
+                          "연애",
+                          style: TextStyle(
+                            fontWeight: _type == DDayType.LOVE.toString()
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            _type = DDayType.SOLDIER.toString();
+                          });
+                        },
+                        child: Text(
+                          "전역일",
+                          style: TextStyle(
+                            fontWeight: _type == DDayType.SOLDIER.toString()
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            _type = DDayType.STUDY.toString();
+                          });
+                        },
+                        child: Text(
+                          "수능",
+                          style: TextStyle(
+                            fontWeight: _type == DDayType.STUDY.toString()
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        onTap: () {
+                          FocusScope.of(context).requestFocus(_titleFocusNode);
+                        },
+                        focusNode: _titleFocusNode,
+                        controller: textEditingController,
+                        cursorColor: Colors.pink[200],
+                        maxLength: 20,
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                          labelText: "제목 입력",
+                          labelStyle: TextStyle(
+                            color: _titleFocusNode.hasFocus
+                                ? Colors.pink
+                                : Colors.grey,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.message_outlined,
+                            color: _titleFocusNode.hasFocus
+                                ? Colors.pink[200]
+                                : null,
+                          ),
+                          focusColor: Colors.pink[200],
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 20.0),
+                          helperText: "20자내로 작성해주세요.",
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.pink[200],
+                            ),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 300,
+                        child: CupertinoDatePicker(
+                          minimumYear: DateTime.now().subYears(100).year,
+                          maximumYear: DateTime.now().addYears(100).year,
+                          maximumDate: Date.parse(
+                            DateTime.now()
+                                .addYears(100)
+                                .format(datePattern, locale),
+                            pattern: datePattern,
+                            locale: locale,
+                          ),
+                          initialDateTime: Date.parse(
+                            _datetime,
+                            pattern: datePattern,
+                            locale: locale,
+                          ),
+                          onDateTimeChanged: (datetime) => {
+                            setState(() {
+                              _datetime = datetime.format(datePattern, locale);
+                            })
+                          },
+                          mode: CupertinoDatePickerMode.date,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class TypeSelector extends StatefulWidget {
-  @override
-  _TypeSelectorState createState() => _TypeSelectorState();
-}
-
-class _TypeSelectorState extends State<TypeSelector> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      height: 90,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          RaisedButton(
-            onPressed: () {
-              setState(() {
-                _type = DDayType.DEFAULT.toString();
-              });
-            },
-            color: _type == DDayType.DEFAULT.toString()
-                ? Colors.pink[100]
-                : Colors.grey[200],
-            child: Text("기본"),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          RaisedButton(
-            onPressed: () {
-              setState(() {
-                _type = DDayType.LOVE.toString();
-              });
-            },
-            color: _type == DDayType.LOVE.toString()
-                ? Colors.pink[100]
-                : Colors.grey[200],
-            child: Text("연애"),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          RaisedButton(
-            onPressed: () {
-              setState(() {
-                _type = DDayType.SOLDIER.toString();
-              });
-            },
-            color: _type == DDayType.SOLDIER.toString()
-                ? Colors.pink[100]
-                : Colors.grey[200],
-            child: Text("전역일"),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          RaisedButton(
-            onPressed: () {
-              setState(() {
-                _type = DDayType.STUDY.toString();
-              });
-            },
-            color: _type == DDayType.STUDY.toString()
-                ? Colors.pink[100]
-                : Colors.grey[200],
-            child: Text("수능"),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class DatetimeForm extends StatefulWidget {
-  @override
-  _DatetimeFormState createState() => _DatetimeFormState();
-}
-
-class _DatetimeFormState extends State<DatetimeForm> {
-  final String DATE_PATTERN = "yyyy-MM-dd";
-  final String DATE_LOCALE = "ko_KR";
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
-      child: CupertinoDatePicker(
-        minimumYear: DateTime.now().subYears(100).year,
-        maximumYear: DateTime.now().addYears(100).year,
-        maximumDate: Date.parse(
-          DateTime.now().addYears(100).format(DATE_PATTERN, DATE_LOCALE),
-          pattern: DATE_PATTERN,
-          locale: DATE_LOCALE,
-        ),
-        initialDateTime: Date.parse(
-          _datetime,
-          pattern: DATE_PATTERN,
-          locale: DATE_LOCALE,
-        ),
-        onDateTimeChanged: (datetime) => {
-          setState(() {
-            _datetime = datetime.format(DATE_PATTERN, DATE_LOCALE);
-          })
-        },
-        mode: CupertinoDatePickerMode.date,
       ),
     );
   }
