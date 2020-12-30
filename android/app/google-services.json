@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "485686270352",
+    "project_id": "d-day-diary-3c6e4",
+    "storage_bucket": "d-day-diary-3c6e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485686270352:android:3dbac5e8561e020a11bb15",
+        "android_client_info": {
+          "package_name": "com.memostack.d_day_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485686270352-3ci5g1t3j68ua6dngmj6ttn9bhjju204.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCablu_4FZlEQeXQ8n1vjN4rqENKKxw290"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485686270352-3ci5g1t3j68ua6dngmj6ttn9bhjju204.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
