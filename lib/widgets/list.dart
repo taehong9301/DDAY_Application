@@ -61,14 +61,28 @@ class DDayCard extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Text(dDay.title),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    dDay.title,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    dDay.datetime,
+                    style: TextStyle(fontSize: 14.0),
+                  ),
+                ],
+              ),
               flex: 1,
             ),
             Text(
               getDDayMessage(dDay.datetime, type: dDay.type),
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+                  fontWeight: FontWeight.bold, color: Colors.pink[300]),
             ),
           ],
         ),
