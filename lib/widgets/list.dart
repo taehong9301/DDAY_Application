@@ -1,5 +1,6 @@
 import 'package:d_day_app/models/dday.dart';
 import 'package:d_day_app/repositories/database_helper.dart';
+import 'package:d_day_app/screens/detail.dart';
 import 'package:d_day_app/screens/register.dart';
 import 'package:d_day_app/utils/data_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -93,10 +94,13 @@ class _DDayListViewState extends State<DDayListView> {
           ),
           actions: <Widget>[
             new IconSlideAction(
-              caption: '공유',
+              caption: '상세보기',
               color: Colors.blue[500],
-              icon: Icons.share,
-              // onTap: () => _showSnackBar(context, 'Share'),
+              icon: Icons.more_horiz,
+              onTap: () {
+                Navigator.pushNamed(context, DetailPage.routeName,
+                    arguments: dDay);
+              },
             ),
           ],
           secondaryActions: <Widget>[
